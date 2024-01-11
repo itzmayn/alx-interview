@@ -14,18 +14,33 @@ def canUnlockAll(boxes):
     length to invoke two for iterations one to traverse the list
     and the other to compaer if key is idx or not in order to open
     """
+   # Check if input is a list
     if type(boxes) is not list:
         return False
-    elif (len(boxes)) == 0:
+
+    # Check if the list is empty
+    elif len(boxes) == 0:
         return False
-    for k in range(1, len(boxes) - 1):
+
+    # Iterate through the keys starting from 1 (assuming 0 is already unlocked)
+    for key in range(1, len(boxes) - 1):
+        # Initialize a flag to check if the key can open any box
         boxes_checked = False
+
+        # Iterate through the boxes
         for idx in range(len(boxes)):
-            boxes_checked = k in boxes[idx] and k != idx
+            # Check if the key can open the box and the key is not the same as the box index
+            boxes_checked = key in boxes[idx] and key != idx
+
+            # If the key can open the box, exit the inner loop
             if boxes_checked:
                 break
-        if boxes_checked is False:
+
+        # If the key cannot open any box, return False
+        if not boxes_checked:
             return boxes_checked
+
+    # If all keys can open corresponding boxes, return True
     return True
 
 
