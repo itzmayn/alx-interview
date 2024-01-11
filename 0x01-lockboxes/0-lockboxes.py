@@ -9,7 +9,11 @@ Task: Write a method that determines if all the boxes can be opened.
 
 
 def canUnlockAll(boxes):
-    # Get the total number of boxes
+    """
+    Function that checks with boolean value if the list type and
+    length to invoke two for iterations one to traverse the list
+    and the other to compaer if key is idx or not in order to open
+    """
     n = len(boxes)
 
     # Create a set to keep track of visited boxes
