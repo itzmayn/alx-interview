@@ -4,14 +4,7 @@
 
 
 def minOperations(n: int) -> int:
-    """
-    Calculate the minimum operations needed to obtain a string of 'H' characters with a length of n.
 
-    :param n: Target length of the string
-    :return: Minimum operations needed
-    """
-    
-    # Initialize variables
     next = 'H'       # Content currently stored in the clipboard
     body = 'H'       # Growing string of 'H' characters
     op = 0           # Count of operations performed
