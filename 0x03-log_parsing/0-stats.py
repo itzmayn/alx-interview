@@ -6,10 +6,10 @@ Log parsing script.
 import sys
 
 if __name__ == '__main__':
-    # Initialize variables to track total file size and line count
+    # Initialize variables to keep track of total file size and line count
     filesize, count = 0, 0
     
-    # List of status codes to monitor
+    # List of status codes to track
     codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
     
     # Dictionary to store the count of each status code
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     def print_stats(stats: dict, file_size: int) -> None:
         """
-        Helper function to print accumulated statistics.
+        Helper function to print statistics.
         """
         print("File size: {:d}".format(filesize))
         for k, v in sorted(stats.items()):
@@ -38,14 +38,12 @@ if __name__ == '__main__':
                 if status_code in stats:
                     stats[status_code] += 1
             except BaseException:
-                # Ignore exceptions related to status code extraction
                 pass
             
             try:
                 # Extract the file size from the data and update the total file size
                 filesize += int(data[-1])
             except BaseException:
-                # Ignore exceptions related to file size extraction
                 pass
             
             # Print statistics after every 10 lines
