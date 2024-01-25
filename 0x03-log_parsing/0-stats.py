@@ -5,57 +5,52 @@ Log Parsing Script
 
 import sys
 
-if __name__ == '__main__':
-    # Initialize variables for total file size and line count
-    filesize, count = 0, 0
+def print_msg(dict_sc, total_file_size):
+    """
+    Method to print statistics.
     
-    # List of status codes to track
-    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    Args:
+        dict_sc (dict): Dictionary containing status codes and their counts.
+        total_file_size (int): Total size of the files.
     
-    # Dictionary to store the count of each status code
-    stats = {k: 0 for k in codes}
+    Returns:
+        None
+    """
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
-    def _print(stats: dict, file_size: int) -> None:
-        """
-        Print statistics to the console.
-        """
-        print("File size: {:d}".format(filesize))
-        for k, v in sorted(stats.items()):
-            if v:
-                print("{}: {}".format(k, v))
+total_file_size = 0
+code = 0
+counter = 0
+dict_sc = {"200": 0,
+           "301": 0,
+           "400": 0,
+           "401": 0,
+           "403": 0,
+           "404": 0,
+           "405": 0,
+           "500": 0}
 
-    try:
-        # Read input lines from stdin
-        for line in sys.stdin:
-            count += 1
-            
-            # Split the line into data components
-            data = line.split()
-            
-            try:
-                # Extract the status code from the data
-                status_code = data[-2]
-                if status_code in stats:
-                    stats[status_code] += 1
-            except BaseException:
-                # Handle exceptions if there are issues with status code extraction
-                pass
-            
-            try:
-                # Extract the file size from the data and update the total file size
-                filesize += int(data[-1])
-            except BaseException:
-                # Handle exceptions if there are issues with file size extraction
-                pass
-            
-            # Print statistics after every 10 lines
-            if count % 10 == 0:
-                _print(stats, filesize)
-        
-        # Print final statistics
-        _print(stats, filesize)
+try:
+    for line in sys.stdin:
+        parsed_line = line.split()  # Split the input line into tokens
+        parsed_line = parsed_line[::-1]  # Reverse the list (inverting)
 
-    except KeyboardInterrupt:
-        # Handle keyboard interruption by printing current statistics
-        _print(stats, filesize)
-        raise
+        if len(parsed_line) > 2:
+            counter += 1
+
+            if counter <= 10:
+                total_file_size += int(parsed_line[0])  # Extract and accumulate file size
+                code = parsed_line[1]  # Extract status code
+
+                if code in dict_sc:
+                    dict_sc[code] += 1  # Update status code count
+
+            if counter == 10:
+                print_msg(dict_sc, total_file_size)  # Print statistics after processing 10 lines
+                counter = 0
+
+finally:
+    print_msg(dict_sc, total_file_size)  # Print final statistics after processing all lines
