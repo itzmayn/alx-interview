@@ -1,30 +1,61 @@
 #!/usr/bin/python3
-""" Minimum Operations
-    """
+"""
+Log parsing script.
+"""
 
+import sys
 
-def minOperations(n: int) -> int:
-
-    next = 'H'       # Content currently stored in the clipboard
-    body = 'H'       # Growing string of 'H' characters
-    op = 0           # Count of operations performed
+if __name__ == '__main__':
+    # Initialize variables to track total file size and line count
+    filesize, count = 0, 0
     
-    # Continue operations until the length of the string 'H' reaches or exceeds the target length n
-    while len(body) < n:
-        # If the target length is divisible by the current length of the string 'H'
-        if n % len(body) == 0:
-            op += 2         # Copy and paste multiple times to optimally use the clipboard
-            next = body     # Update the clipboard content
-            body += body    # Extend the string by pasting the clipboard content
-        else:
-            op += 1         # Copy the current content of the clipboard
-            body += next    # Paste the content of the clipboard
+    # List of status codes to monitor
+    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    
+    # Dictionary to store the count of each status code
+    stats = {k: 0 for k in codes}
 
-    # Check if the obtained string has the desired length
-    if len(body) != n:
-        return 0
+    def print_stats(stats: dict, file_size: int) -> None:
+        """
+        Helper function to print accumulated statistics.
+        """
+        print("File size: {:d}".format(filesize))
+        for k, v in sorted(stats.items()):
+            if v:
+                print("{}: {}".format(k, v))
 
-    # Return the total number of operations needed to reach or exceed the target length
-    return op
+    try:
+        # Read input lines from stdin
+        for line in sys.stdin:
+            count += 1
+            
+            # Split the line into data components
+            data = line.split()
+            
+            try:
+                # Extract the status code from the data
+                status_code = data[-2]
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                # Ignore exceptions related to status code extraction
+                pass
+            
+            try:
+                # Extract the file size from the data and update the total file size
+                filesize += int(data[-1])
+            except BaseException:
+                # Ignore exceptions related to file size extraction
+                pass
+            
+            # Print statistics after every 10 lines
+            if count % 10 == 0:
+                print_stats(stats, filesize)
+        
+        # Print final statistics
+        print_stats(stats, filesize)
 
-
+    except KeyboardInterrupt:
+        # Handle keyboard interruption by printing current statistics
+        print_stats(stats, filesize)
+        raise
