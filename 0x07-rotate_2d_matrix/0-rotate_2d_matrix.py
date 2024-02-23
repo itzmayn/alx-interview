@@ -1,32 +1,47 @@
 #!/usr/bin/python3
+"""
+Module for in-place 90-degree rotation of a 2D matrix.
+"""
 
 def rotate_2d_matrix(matrix):
     """
-    Rotates the given n x n 2D matrix 90 degrees clockwise in-place.
-    
-    Args:
-        matrix (list): The 2D matrix to be rotated.
+    Rotates an m by n 2D matrix in place.
+
+    Parameters:
+    - matrix (list of lists): The 2D matrix to be rotated.
+
+    Notes:
+    - If the input is not a valid 2D matrix (e.g., not a list or contains non-list elements),
+      the function returns without performing any rotation.
+    - The rotation is performed in an in-place manner.
     """
-    n = len(matrix)
+    if not isinstance(matrix, list) or not matrix or not all(isinstance(row, list) for row in matrix):
+        return
 
-    for layer in range(n // 2):
-        first = layer
-        last = n - 1 - layer
+    rows = len(matrix)
+    cols = len(matrix[0])
 
-        for i in range(first, last):
-            # Save top element
-            top = matrix[first][i]
+    if any(len(row) != cols for row in matrix):
+        return
 
-            # Move left element to top
-            matrix[first][i] = matrix[last - i + first][first]
+    # Initialize pointers for matrix rotation
+    c, r = 0, rows - 1
 
-            # Move bottom element to left
-            matrix[last - i + first][first] = matrix[last][last - i + first]
+    # Iterate through each element in the matrix
+    for i in range(cols * rows):
+        # Check if a new row needs to be created in the rotated matrix
+        if i % rows == 0:
+            matrix.append([])
 
-            # Move right element to bottom
-            matrix[last][last - i + first] = matrix[i][last]
+        # Add the rotated element to the new row
+        matrix[-1].append(matrix[r][c])
 
-            # Move top element to right
-            matrix[i][last] = top
+        # Check if the original row is completed, and remove it
+        if c == cols - 1 and r >= -1:
+            matrix.pop(r)
 
-
+        # Update pointers for the next iteration
+        r -= 1
+        if r == -1:
+            r = rows - 1
+            c += 1
