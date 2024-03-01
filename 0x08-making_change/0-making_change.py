@@ -1,15 +1,22 @@
 #!/usr/bin/python3
-""" Coin Change Algorithm """
+""" Dynamic Programming - Minimum Coin Change """
 
-def make_change(coins, total):
-    """ Find the minimum number of coins needed to reach a specific total amount.
+def makeChange(coins, total):
+    """ Find the fewest number of coins needed to reach a given total amount.
 
     Args:
-        coins (list): List of available coin denominations.
-        total (int): The target total amount.
+        coins (list): List of coin denominations available.
+        total (int): Target total amount.
 
     Returns:
-        int: Minimum number of coins required to achieve the total, or -1 if not possible.
+        int: Minimum number of coins needed to achieve the total.
+             Returns 0 if the total is 0 or less.
+             Returns -1 if the total cannot be met by any combination of available coins.
+
+    Notes:
+        - The coin values are integers greater than 0.
+        - You can assume an infinite number of each coin denomination.
+        - The solution's runtime will be evaluated for performance.
     """
     if total <= 0:
         return 0
