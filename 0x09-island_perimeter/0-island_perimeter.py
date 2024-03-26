@@ -1,51 +1,26 @@
 #!/usr/bin/python3
-"""
-Module defining the isWinner function.
-
-This module contains functions related to determining the winner in a prime game.
-"""
+"""Defines island perimeter finding function."""
 
 
-def isWinner(x, nums):
+def island_perimeter(grid):
+    """Return the perimiter of an island.
+    The grid represents water by 0 and land by 1.
+    Args:
+        grid (list): A list of list of integers representing an island.
+    Returns:
+        The perimeter of the island defined in grid.
     """
-    Determines the winner of a set of prime number removal games.
-    """
-    if x <= 0 or nums is None:
-        return None
-    if x != len(nums):
-        return None
-    # Initialize scores and array of possible prime numbers
-    ben = 0
-    maria = 0
-    a = [1 for x in range(sorted(nums)[-1] + 1)]
-    # The first two elements of the list, a[0] and a[1], are set to 0
-    # because 0 and 1 are not prime numbers
-    a[0], a[1] = 0, 0
-    # Use Sieve of Eratosthenes algorithm to generate array of prime numbers
-    for i in range(2, len(a)):
-        rm_multiples(a, i)
-    # Play each round of the game
-    for i in nums:
-        # If the sum of prime numbers in the set is even, Ben wins
-        if sum(a[0:i + 1]) % 2 == 0:
-            ben += 1
-        else:
-            maria += 1
-    # Determine the winner of the game
-    if ben > maria:
-        return "Ben"
-    if maria > ben:
-        return "Maria"
-    return None
+    width = len(grid[0])
+    height = len(grid)
+    edges = 0
+    size = 0
 
-
-def rm_multiples(ls, x):
-    """
-    Removes multiples of a prime number from an array of possible prime
-    numbers.
-    """
-    for i in range(2, len(ls)):
-        try:
-            ls[i * x] = 0
-        except (ValueError, IndexError):
-            break
+    for i in range(height):
+        for j in range(width):
+            if grid[i][j] == 1:
+                size += 1
+                if (j > 0 and grid[i][j - 1] == 1):
+                    edges += 1
+                if (i > 0 and grid[i - 1][j] == 1):
+                    edges += 1
+    return size * 4 - edges * 2
