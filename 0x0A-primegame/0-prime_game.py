@@ -1,20 +1,9 @@
 #!/usr/bin/python3
-"""
-Module defining isWinner function.
-"""
+"""Module defining isWinner function."""
+
 
 def isWinner(x, nums):
-    """
-    Function to determine the winner in the prime game.
-
-    Parameters:
-    x (int): Some parameter description.
-    nums (list): Some parameter description.
-
-    Returns:
-    str or None: The winner of the game, either "Winner: Maria" or "Winner: Ben",
-    or None if there is no winner.
-    """
+    """Function to get who has won in prime game"""
     mariaWinsCount = 0
     benWinsCount = 0
 
@@ -28,7 +17,7 @@ def isWinner(x, nums):
 
         isMariaTurns = True
 
-        while True:
+        while(True):
             if not primesSet:
                 if isMariaTurns:
                     benWinsCount += 1
@@ -45,22 +34,15 @@ def isWinner(x, nums):
 
     if mariaWinsCount > benWinsCount:
         return "Winner: Maria"
-    elif mariaWinsCount < benWinsCount:
+
+    if mariaWinsCount < benWinsCount:
         return "Winner: Ben"
-    else:
-        return None
+
+    return None
 
 
 def is_prime(n):
-    """
-    Returns True if n is a prime number, False otherwise.
-
-    Parameters:
-    n (int): The number to be checked for primality.
-
-    Returns:
-    bool: True if n is prime, False otherwise.
-    """
+    """Returns True if n is prime, else False."""
     if n < 2:
         return False
     for i in range(2, int(n ** 0.5) + 1):
@@ -70,15 +52,6 @@ def is_prime(n):
 
 
 def primes_in_range(start, end):
-    """
-    Returns a list of prime numbers in the range [start, end].
-
-    Parameters:
-    start (int): The start of the range (inclusive).
-    end (int): The end of the range (inclusive).
-
-    Returns:
-    list: A list of prime numbers in the specified range.
-    """
-    primes = [n for n in range(start, end + 1) if is_prime(n)]
+    """Returns a list of prime numbers between start and end (inclusive)."""
+    primes = [n for n in range(start, end+1) if is_prime(n)]
     return primes
